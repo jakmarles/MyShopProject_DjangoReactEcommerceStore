@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,9 +17,9 @@ function PlaceOrderScreen() {
 
     const cart = useSelector(state => state.cart)
 
-    cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
-    cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2)
-    cart.taxPrice = Number((0.082) * cart.itemsPrice).toFixed(2)
+    cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2) // item price
+    cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 0).toFixed(2) // shipping cost used to be 10$ and 0 if its costs more than 100$, i set it to 0 for easier testing in the future. to set it to 10$ use (cart.itemsPrice > 100 ? 0 : 10).toFixed(2)
+    cart.taxPrice = Number((0) * cart.itemsPrice).toFixed(2) // tax price used to be 0.082 but set to 0 for easier testing in the future
 
     cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
 

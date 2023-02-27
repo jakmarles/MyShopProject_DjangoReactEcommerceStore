@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
  
  
 const useQuery = () => {
