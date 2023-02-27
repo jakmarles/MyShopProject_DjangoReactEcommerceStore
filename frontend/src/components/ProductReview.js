@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createProductReview } from '../actions/productActions'
 import Message from './Message' 
 
-const ProductReview = ({ productId }) => {
+const ProductReview = ({ productId, productName  }) => {
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
 
@@ -31,7 +31,9 @@ const ProductReview = ({ productId }) => {
 
   return (
     <div>
-      Write a review
+      <hr/>
+      <br/>
+     <h4>Write a review for {productName} </h4>
 
       {loadingProductReview && <Message variant='info'>Loading...</Message>}
       {successProductReview && <Message variant='success'>Review Submitted</Message>}

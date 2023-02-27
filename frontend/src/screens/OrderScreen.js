@@ -1,8 +1,11 @@
+// client id pp ATSHuxOt2K0vI4LD5KjuFzlIDEEP1YL2U0JgsmAkfEKec_k8dXWm8T2apvFN8xl1EovxR9259RSkl4dI
+//secret key pp EJ5t49KcZYNE89OV0XhiRA5VwpEIz2zAg6-bujYzzsXcA4yRj_w6451NHNZePbed1h0V8gdgy4ZXvmz_
+
 import React, { useState, useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { PayPalButton } from "react-paypal-button-v2";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import {
@@ -46,7 +49,7 @@ function OrderScreen() {
     const script = document.createElement("script");
     script.type = "text/javascript";
     script.src =
-      "https://www.paypal.com/sdk/js?client-id=AeDXja18CkwFUkL-HQPySbzZsiTrN52cG13mf9Yz7KiV2vNnGfTDP0wDEN9sGlhZHrbb_USawcJzVDgn";
+      "https://www.paypal.com/sdk/js?client-id=ATSHuxOt2K0vI4LD5KjuFzlIDEEP1YL2U0JgsmAkfEKec_k8dXWm8T2apvFN8xl1EovxR9259RSkl4dI";
     script.async = true;
     script.onload = () => {
       setSdkReady(true);
@@ -161,7 +164,7 @@ function OrderScreen() {
                       </Row>
                       <Row>
                         <Col md={12}>
-                          <ProductReview productId={item.product} />
+                          <ProductReview productId={item.product} productName={item.name} />
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -214,17 +217,30 @@ function OrderScreen() {
                   {!sdkReady ? (
                     <Loader />
                   ) : (
-                    <PayPalButton
-                      amount={order.totalPrice}
-                      onSuccess={successPaymentHandler}
-                    />
+                    <PayPalScriptProvider
+                      options={{
+                        "client-id":
+                          "ATSHuxOt2K0vI4LD5KjuFzlIDEEP1YL2U0JgsmAkfEKec_k8dXWm8T2apvFN8xl1EovxR9259RSkl4dI",
+                      }}
+                    >
+                      <PayPalButtons
+                        createOrder={(data, actions) => {
+                          return actions.order.create({
+                            purchase_units: [
+                              {
+                                amount: {
+                                  value: order.totalPrice,
+                                },
+                              },
+                            ],
+                          });
+                        }}
+                        onApprove={successPaymentHandler}
+                      ></PayPalButtons>
+                    </PayPalScriptProvider>
                   )}
                 </ListGroup.Item>
               )}
-
-              
-
-
             </ListGroup>
             {loadingDeliver && <Loader />}
             {userInfo &&
